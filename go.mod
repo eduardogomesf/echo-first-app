@@ -1,4 +1,4 @@
-module echo-first-app
+module github.com/eduardogomesf/echo-first-app
 
 go 1.25.0
 

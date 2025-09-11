@@ -1,8 +1,7 @@
 package main
 
 import (
-	"echo-first-app/handlers"
-
+	"github.com/eduardogomesf/echo-first-app/internal/infra/rest/handlers"
 	"github.com/labstack/echo/v4"
 )
 

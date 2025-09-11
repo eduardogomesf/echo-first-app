@@ -3,15 +3,11 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/eduardogomesf/echo-first-app/internal/domain/entities"
 	"github.com/labstack/echo/v4"
 )
 
-type Product struct {
-	Name  string  `json:"name"`
-	Price float32 `json:"price"`
-}
-
-var products []Product = []Product{}
+var products []entities.Product = []entities.Product{}
 
 func Health(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]string{"message": "server running"})
@@ -22,7 +18,7 @@ func GetProducts(c echo.Context) error {
 }
 
 func AddProduct(c echo.Context) error {
-	p := new(Product)
+	p := new(entities.Product)
 
 	if err := c.Bind(p); err != nil {
 		return err
