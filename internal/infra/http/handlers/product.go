@@ -9,10 +9,6 @@ import (
 
 var products []entities.Product = []entities.Product{}
 
-func Health(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]string{"message": "server running"})
-}
-
 func GetProducts(c echo.Context) error {
 	return c.JSON(http.StatusOK, products)
 }
