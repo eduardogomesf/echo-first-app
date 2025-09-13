@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/eduardogomesf/echo-first-app/internal/domain/entities"
+	"github.com/eduardogomesf/echo-first-app/internal/infra/http/dtos"
 	"github.com/labstack/echo/v4"
 )
 
@@ -14,11 +15,13 @@ func GetProducts(c echo.Context) error {
 }
 
 func AddProduct(c echo.Context) error {
-	p := new(entities.Product)
+	dto := new(dtos.AddProductDto)
 
-	if err := c.Bind(p); err != nil {
+	if err := c.Bind(dto); err != nil {
 		return err
 	}
+
+	p := entities.NewProduct(dto.Name, dto.Price)
 
 	products = append(products, *p)
 
