@@ -8,9 +8,14 @@ import (
 
 func main() {
 	ws := webserver.NewWebServer()
-	ws.AddHandler("/products", "POST", handlers.AddProduct, middlewares.UseAuthMiddleware())
+
 	ws.AddHandler("/", "GET", handlers.Health)
+
+	ws.AddHandler("/products", "POST", handlers.AddProduct, middlewares.UseAuthMiddleware())
 	ws.AddHandler("/products", "GET", handlers.GetProducts)
 	ws.AddHandler("/products/:name", "GET", handlers.GetProductByName)
+
+	ws.AddHandler("/login", "POST", handlers.Login)
+
 	ws.Start(":3000")
 }
