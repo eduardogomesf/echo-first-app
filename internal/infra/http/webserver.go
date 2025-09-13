@@ -27,7 +27,7 @@ func NewWebServer() *WebServer {
 	}
 }
 
-func (ws *WebServer) AddHandler(route string, method string, handler echo.HandlerFunc) error {
+func (ws *WebServer) AddHandler(route string, method string, handler echo.HandlerFunc, m ...echo.MiddlewareFunc) error {
 	allowedMethods := []string{"POST", "GET"} // TO DO: add more methods
 
 	if !slices.Contains(allowedMethods, method) {
@@ -52,9 +52,9 @@ func (ws *WebServer) AddHandler(route string, method string, handler echo.Handle
 
 	switch method {
 	case "POST":
-		ws.server.POST(route, handler)
+		ws.server.POST(route, handler, m...)
 	case "GET":
-		ws.server.GET(route, handler)
+		ws.server.GET(route, handler, m...)
 	}
 
 	return nil
