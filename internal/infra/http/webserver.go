@@ -6,6 +6,7 @@ import (
 	"slices"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type Handler struct {
@@ -59,7 +60,14 @@ func (ws *WebServer) AddHandler(route string, method string, handler echo.Handle
 	return nil
 }
 
+func (ws *WebServer) applyGlobalMiddlewares() {
+	ws.server.Use(middleware.Logger())
+	ws.server.Use(middleware.Recover()) // TO DO: perform redundancy tests with this middleware disabled
+}
+
 func (ws *WebServer) Start(port string) {
+	ws.applyGlobalMiddlewares()
+
 	err := ws.server.Start(port)
 
 	if err != nil {
