@@ -21,7 +21,12 @@ func AddProduct(c echo.Context) error {
 		return err
 	}
 
-	p := entities.NewProduct(dto.Name, dto.Price)
+	p := entities.NewProduct(
+		dto.Name,
+		dto.Price,
+		dto.Categories,
+		dto.IsDisabled,
+	)
 
 	products = append(products, *p)
 
