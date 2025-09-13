@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -61,6 +62,8 @@ func (ws *WebServer) AddHandler(route string, method string, handler echo.Handle
 }
 
 func (ws *WebServer) applyGlobalMiddlewares() {
+	ws.server.Use(middleware.RequestID())
+	ws.server.Use(middleware.ContextTimeout(60 * time.Second))
 	ws.server.Use(middleware.Logger())
 	ws.server.Use(middleware.Recover()) // TO DO: perform redundancy tests with this middleware disabled
 }
