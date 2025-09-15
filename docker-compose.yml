@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:9.6
+    container_name: product-catalog-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: catalog
+    ports:
+      - "5432:5432"
+    volumes:
+      - product-catalog-db-data:/var/lib/postgresql/data
+
+volumes:
+  product-catalog-db-data:
