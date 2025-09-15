@@ -11,7 +11,9 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Login(c echo.Context) error {
+type AuthHandler struct{}
+
+func (ac *AuthHandler) Login(c echo.Context) error {
 	dto := new(dtos.LoginDto)
 
 	if err := c.Bind(dto); err != nil {

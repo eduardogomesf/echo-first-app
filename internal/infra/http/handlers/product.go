@@ -10,11 +10,14 @@ import (
 
 var products []entities.Product = []entities.Product{}
 
-func GetProducts(c echo.Context) error {
+type ProductsHandler struct {
+}
+
+func (pc *ProductsHandler) GetProducts(c echo.Context) error {
 	return c.JSON(http.StatusOK, products)
 }
 
-func AddProduct(c echo.Context) error {
+func (pc *ProductsHandler) AddProduct(c echo.Context) error {
 	dto := new(dtos.AddProductDto)
 
 	if err := c.Bind(dto); err != nil {
@@ -33,7 +36,7 @@ func AddProduct(c echo.Context) error {
 	return c.JSON(http.StatusOK, p)
 }
 
-func GetProductByName(c echo.Context) error {
+func (pc *ProductsHandler) GetProductByName(c echo.Context) error {
 	name := c.Param("name")
 
 	for _, p := range products {

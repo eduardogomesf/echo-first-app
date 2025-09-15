@@ -22,13 +22,19 @@ func main() {
 
 	ws := webserver.NewWebServer()
 
-	ws.AddHandler("/", "GET", handlers.Health)
+	// health
+	healthHandler := handlers.HealthHandler{}
+	ws.AddHandler("/", "GET", healthHandler.Health)
 
-	ws.AddHandler("/products", "POST", handlers.AddProduct, middlewares.UseAuthMiddleware())
-	ws.AddHandler("/products", "GET", handlers.GetProducts)
-	ws.AddHandler("/products/:name", "GET", handlers.GetProductByName)
+	// products
+	productsHandler := handlers.ProductsHandler{}
+	ws.AddHandler("/products", "POST", productsHandler.AddProduct, middlewares.UseAuthMiddleware())
+	ws.AddHandler("/products", "GET", productsHandler.GetProducts)
+	ws.AddHandler("/products/:name", "GET", productsHandler.GetProductByName)
 
-	ws.AddHandler("/login", "POST", handlers.Login)
+	// auth
+	authHandler := handlers.AuthHandler{}
+	ws.AddHandler("/login", "POST", authHandler.Login)
 
 	ws.Start(":" + port)
 }
