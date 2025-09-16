@@ -48,13 +48,13 @@ func main() {
 	ws.AddHandler("/healthz", "GET", healthHandler.HealthZ)
 
 	// products
-	productsHandler := handlers.ProductsHandler{}
+	productsHandler := handlers.NewProductsHandler(dbConn)
 	ws.AddHandler("/products", "POST", productsHandler.AddProduct, middlewares.UseAuthMiddleware())
 	ws.AddHandler("/products", "GET", productsHandler.GetProducts)
 	ws.AddHandler("/products/:name", "GET", productsHandler.GetProductByName)
 
 	// auth
-	authHandler := handlers.AuthHandler{}
+	authHandler := handlers.NewAuthHandler(dbConn)
 	ws.AddHandler("/login", "POST", authHandler.Login)
 
 	ws.Start(":" + port)

@@ -5,12 +5,20 @@ import (
 
 	"github.com/eduardogomesf/echo-first-app/internal/domain/entities"
 	"github.com/eduardogomesf/echo-first-app/internal/infra/http/dtos"
+	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
 )
 
 var products []entities.Product = []entities.Product{}
 
 type ProductsHandler struct {
+	dbConn *pgx.Conn
+}
+
+func NewProductsHandler(dbConn *pgx.Conn) *ProductsHandler {
+	return &ProductsHandler{
+		dbConn: dbConn,
+	}
 }
 
 func (pc *ProductsHandler) GetProducts(c echo.Context) error {

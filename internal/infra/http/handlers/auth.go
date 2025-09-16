@@ -8,10 +8,19 @@ import (
 	configs "github.com/eduardogomesf/echo-first-app/cmd/config"
 	"github.com/eduardogomesf/echo-first-app/internal/infra/http/dtos"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
 )
 
-type AuthHandler struct{}
+type AuthHandler struct {
+	dbConn *pgx.Conn
+}
+
+func NewAuthHandler(dbConn *pgx.Conn) *AuthHandler {
+	return &AuthHandler{
+		dbConn: dbConn,
+	}
+}
 
 func (ac *AuthHandler) Login(c echo.Context) error {
 	dto := new(dtos.LoginDto)
