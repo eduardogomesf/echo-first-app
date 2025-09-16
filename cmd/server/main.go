@@ -40,6 +40,8 @@ func main() {
 		log.Fatal(fmt.Errorf("failed to ping DB: %s", err))
 	}
 
+	defer dbConn.Close(ctx)
+
 	// health
 	healthHandler := handlers.NewHealthController(dbConn)
 	ws.AddHandler("/health", "GET", healthHandler.Health)
