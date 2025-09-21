@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/eduardogomesf/echo-first-app/internal/domain/entities"
@@ -39,7 +41,19 @@ func (pc *ProductsHandler) AddProduct(c echo.Context) error {
 		dto.IsDisabled,
 	)
 
-	products = append(products, *p)
+	insertQuery := "INSERT INTO products (id, name, price, categories, is_disabled, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)"
+
+	_, err := pc.dbConn.Exec(
+		context.Background(),
+		insertQuery,
+		p.Id, p.Name, p.Price, p.Categories, p.IsDisabled, p.CreatedAt, p.UpdatedAt,
+	)
+
+	if err != nil {
+		errMessage := fmt.Errorf("error saving data in the database %s", err)
+		fmt.Println(errMessage)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Fail to create product"})
+	}
 
 	return c.JSON(http.StatusOK, p)
 }
