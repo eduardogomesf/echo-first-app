@@ -24,6 +24,20 @@ func NewProductsHandler(dbConn *pgx.Conn) *ProductsHandler {
 }
 
 func (pc *ProductsHandler) GetProducts(c echo.Context) error {
+	rows, err := pc.dbConn.Query(context.Background(), "SELECT * FROM products")
+
+	if err != nil {
+		fmt.Println(fmt.Errorf("error retrieving products from database %s", err))
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Fail to retrieve products"})
+	}
+
+	products, err := pgx.CollectRows(rows, pgx.RowToStructByName[entities.Product])
+
+	if err != nil {
+		fmt.Println(fmt.Errorf("error scanning products from query result to struct %s", err))
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Fail to retrieve products"})
+	}
+
 	return c.JSON(http.StatusOK, products)
 }
 
