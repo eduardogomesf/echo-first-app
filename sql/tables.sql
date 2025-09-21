@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS products (
+  id UUID PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  price DECIMAL NOT NULL,
+  categories TEXT[] NOT NULL,
+  is_disabled BOOLEAN NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);

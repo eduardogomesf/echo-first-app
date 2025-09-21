@@ -6,6 +6,7 @@ import (
 	"log"
 
 	configs "github.com/eduardogomesf/echo-first-app/cmd/config"
+	db "github.com/eduardogomesf/echo-first-app/internal/infra/db/sql"
 	webserver "github.com/eduardogomesf/echo-first-app/internal/infra/http"
 	"github.com/eduardogomesf/echo-first-app/internal/infra/http/handlers"
 	"github.com/eduardogomesf/echo-first-app/internal/infra/http/middlewares"
@@ -41,6 +42,9 @@ func main() {
 	}
 
 	defer dbConn.Close(ctx)
+
+	// Load tables
+	db.CreateTables(dbConn)
 
 	// health
 	healthHandler := handlers.NewHealthController(dbConn)
