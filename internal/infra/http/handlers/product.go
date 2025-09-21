@@ -11,8 +11,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var products []entities.Product = []entities.Product{}
-
 type ProductsHandler struct {
 	dbConn *pgx.Conn
 }
@@ -75,11 +73,19 @@ func (pc *ProductsHandler) AddProduct(c echo.Context) error {
 func (pc *ProductsHandler) GetProductByName(c echo.Context) error {
 	name := c.Param("name")
 
-	for _, p := range products {
-		if p.Name == name {
-			return c.JSON(http.StatusOK, p)
-		}
+	// TO DO: do I need to validate if name has a valid value?
+
+	row := pc.dbConn.QueryRow(context.Background(), "SELECT * FROM products where name = $1", name)
+
+	product := entities.Product{}
+
+	err := row.Scan(&product.Id, &product.Name, &product.Price, &product.Categories, &product.IsDisabled, &product.CreatedAt, &product.UpdatedAt)
+
+	if err != nil {
+		// TO DO: differentiate between no match and actual error
+		fmt.Println(fmt.Errorf("product not found by name %s: %s", name, err))
+		return c.JSON(http.StatusNotFound, map[string]string{"message": "Product not found"})
 	}
 
-	return c.JSON(http.StatusNotFound, map[string]string{"message": "Product not found"})
+	return c.JSON(http.StatusOK, product)
 }
